@@ -11,7 +11,7 @@ import com.luv2code.springboot.thymeleafdemo.entity.Film;
 import com.luv2code.springboot.thymeleafdemo.search.Finder;
 
 @Controller
-@RequestMapping("/employees")
+@RequestMapping("/mss")
 public class SearchController {
 	
 	@GetMapping("/search")
@@ -20,7 +20,7 @@ public class SearchController {
 		
 		theModel.addAttribute("film", theFilm);			
 		
-		return "/employees/search-form";
+		return "/mss/search-form";
 	}
 
 	
@@ -70,7 +70,7 @@ public class SearchController {
 		
 		theModel.addAttribute("trailer_url", trailer_url);
 		
-		return "/employees/search-form";
+		return "/mss/search-form";
 	}
 
 }

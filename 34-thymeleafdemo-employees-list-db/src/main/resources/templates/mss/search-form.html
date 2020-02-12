@@ -30,19 +30,6 @@
 
 		<hr>
 
-
-		<!-- 		<form action="#" th:action="@{/employees/search}" th:object="${film}" -->
-		<!-- 			method="GET"> -->
-
-		<!-- Add hidden form field to handle update -->
-
-		<!-- 			<div> -->
-		<!-- 				<label for="subject">Subject: </label> <input type="text" -->
-		<!-- 					name="subject" th:field="*{firstName}"> <input -->
-		<!-- 					type="submit" value="Search"> -->
-		<!-- 			</div> -->
-		<!-- 		</form> -->
-
 		<div id="logo" class="text-center">
 			<h1>
 				<img th:src="@{/image/film-logo200.png}"
@@ -53,7 +40,7 @@
 		<div class="d-flex justify-content-center">
 			<nav class="navbar navbar-light bg-light">
 				<form class="form-inline" action="#"
-					th:action="@{/employees/search/action}" th:object="${film}" method="GET">
+					th:action="@{/mss/action}" th:object="${film}" method="GET">
 
 					<label for="subject"></label> <input class="form-control mr-sm-2"
 						type="text" name="subject" th:field="*{firstName}"> <input
@@ -76,7 +63,7 @@
 			</thead>
 
 			<tbody>
-			<td th:object="${jd}" th:text="${jd.original_title}" />	
+<!-- 			<td th:object="${jd}" th:text="${jd.original_title}" />	 -->
 				</tr>
 			</tbody>
 		</table>
@@ -167,7 +154,7 @@ $(document).ready(function() {
 						<li class="list-group-item">				
 						
 						</li>
-						<li class="list-group-item"><td th:object="${jd}" th:text="${jd.original_title}" />	</li>
+						<li class="list-group-item">test	</li>
 						<li class="list-group-item">Porta ac consectetur ac</li>
 						<li class="list-group-item">Vestibulum at eros</li>
 					</ul>
