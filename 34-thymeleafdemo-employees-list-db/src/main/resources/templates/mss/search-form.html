@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+ <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
+<title>Movie Search Service</title>
+</head>
+
+<body>
+
+	<div class="container">
+
+		<hr>
+
+
+		<!-- 		<form action="#" th:action="@{/employees/search}" th:object="${film}" -->
+		<!-- 			method="GET"> -->
+
+		<!-- Add hidden form field to handle update -->
+
+		<!-- 			<div> -->
+		<!-- 				<label for="subject">Subject: </label> <input type="text" -->
+		<!-- 					name="subject" th:field="*{firstName}"> <input -->
+		<!-- 					type="submit" value="Search"> -->
+		<!-- 			</div> -->
+		<!-- 		</form> -->
+
+		<div id="logo" class="text-center">
+			<h1>
+				<img th:src="@{/image/film-logo200.png}"
+					class="figure-img img-fluid rounded" alt="...">
+			</h1>
+		</div>
+		<hr>
+		<div class="d-flex justify-content-center">
+			<nav class="navbar navbar-light bg-light">
+				<form class="form-inline" action="#"
+					th:action="@{/employees/search/action}" th:object="${film}" method="GET">
+
+					<label for="subject"></label> <input class="form-control mr-sm-2"
+						type="text" name="subject" th:field="*{firstName}"> <input
+						class="btn btn-outline-success my-2 my-sm-0" type="submit"
+						value="Search">
+
+
+				</form>
+			</nav>
+		</div>
+
+
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>Film Name</th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+			<td th:object="${jd}" th:text="${jd.original_title}" />	
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<table class="table table-bordered table-striped">
+						
+
+						<tbody>
+
+							<div class="card" style="width: 22rem;">
+								<!-- Add poster for film -->
+								<img th:src="${posterurl}" class="card-img-top" alt="...">
+								<div class="card-body">
+									<p th:utext="${overview}" class="card-text"></p>
+								</div>
+							</div>
+							
+								<!-- begin -->
+						
+						<div class="container-fluid">
+						
+  <div style="text-align: left">
+    <button style ="width: 65%;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoModal" th:data-video="${trailer_url}">Watch trailer</button>
+<!--     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoModal" data-video="https://www.youtube.com/embed/pvODsb_-mls">Launch Video 2</button> -->
+<!--     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoModal" data-video="https://www.youtube.com/embed/4m3dymGEN5E">Launch Video 3</button> -->
+<!--     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoModal" data-video="https://www.youtube.com/embed/uyw0VZsO3I0">Launch Video 4</button> -->
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark border-dark">
+          <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body bg-dark p-0">
+          <!-- BS4 Responsive Embed (https://parrot-tutorial.com/bootstrap4/util_embed.html) -->
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+$(document).ready(function() {
+  // Set iframe attributes when the show instance method is called
+  $("#videoModal").on("show.bs.modal", function(event) {
+    let button = $(event.relatedTarget); // Button that triggered the modal
+    let url = button.data("video");      // Extract url from data-video attribute
+
+    $(this).find("iframe").attr({
+        src: url,
+        allow : "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    });
+  });
+
+  // Remove iframe attributes when the modal has finished being hidden from the user
+  $("#videoModal").on("hidden.bs.modal", function() {
+    $("#videoModal iframe").removeAttr("src allow");
+  });
+});
+</script>
+						
+						
+						<!-- end -->				
+
+
+
+							</tr>
+						</tbody>
+					</table>
+					
+					
+				</div>
+				<div class="col">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item" th:utext=${movie_id}></li>
+						<li class="list-group-item">				
+						
+						</li>
+						<li class="list-group-item"><td th:object="${jd}" th:text="${jd.original_title}" />	</li>
+						<li class="list-group-item">Porta ac consectetur ac</li>
+						<li class="list-group-item">Vestibulum at eros</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+	<a th:href="@{/employees/list}">Back to Employees List</a>
+
+	</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
