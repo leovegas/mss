@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Companies {
 	
+	@Override
+	public String toString() {
+		return name;
+	}
 	@JsonProperty("id")
 	private int id;
 	@JsonProperty("logo_path")

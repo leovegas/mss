@@ -29,11 +29,12 @@
 	<div class="container">
 
 		<hr>
-
 		<div id="logo" class="text-center">
 			<h1>
+				<a href="/"> 
 				<img th:src="@{/image/film-logo200.png}"
 					class="figure-img img-fluid rounded" alt="...">
+					</a>
 			</h1>
 		</div>
 		<hr>
@@ -57,13 +58,18 @@
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">
 				<tr>
-					<th>Film Name</th>
+					<th></th>
 
 				</tr>
 			</thead>
 
 			<tbody>
-<!-- 			<td th:object="${jd}" th:text="${jd.original_title}" />	 -->
+			
+<!-- 			  <span th:if="${jd != null}"> -->
+			  
+<!-- 			  			<td th:object="${jd}" th:text="${jd.original_title}" />				   -->
+			  
+<!-- 			  </span> -->
 				</tr>
 			</tbody>
 		</table>
@@ -138,10 +144,7 @@ $(document).ready(function() {
 </script>
 						
 						
-						<!-- end -->				
-
-
-
+						<!-- end -->	
 							</tr>
 						</tbody>
 					</table>
@@ -150,13 +153,21 @@ $(document).ready(function() {
 				</div>
 				<div class="col">
 					<ul class="list-group list-group-flush">
-						<li class="list-group-item" th:utext=${movie_id}></li>
-						<li class="list-group-item">				
+						<li class="list-group-item" th:if="${jd != null}" th:object="${jd}" th:utext=${jd.original_title}></li>
+						<li class="list-group-item" th:utext=${release_date}></li>
+						<li class="list-group-item" th:utext=${countries}></li>
+						<li class="list-group-item" th:utext=${companies}></li>
+						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.budget+'$'}></li>
+						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.vote_average}></li>						
+						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.vote_count}></li>						
+						<li class="list-group-item"></li>
+						<li class="list-group-item"></li>
+				    	<li class="list-group-item"></li>
 						
-						</li>
-						<li class="list-group-item">test	</li>
-						<li class="list-group-item">Porta ac consectetur ac</li>
-						<li class="list-group-item">Vestibulum at eros</li>
+						
+						
+						
+						
 					</ul>
 				</div>
 			</div>
@@ -164,6 +175,21 @@ $(document).ready(function() {
 	</div>
 
 	<hr>
+
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th></th>
+
+			</tr>
+		</thead>
+
+		<tbody>
+
+			</tr>
+		</tbody>
+	</table>
+
 	<a th:href="@{/employees/list}">Back to Employees List</a>
 
 	</div>

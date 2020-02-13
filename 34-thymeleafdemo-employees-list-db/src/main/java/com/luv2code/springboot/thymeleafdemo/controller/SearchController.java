@@ -38,7 +38,10 @@ public class SearchController {
 		
 		jdFirst.Deser(0);	
 		
+				System.out.print("TEST");
+		
 		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());	
+		
 		
 		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
 		
@@ -46,7 +49,13 @@ public class SearchController {
 		
 		jd.Deser(1);			
 		
-	//	theModel.addAttribute("jd", jd.getMovie());			
+		theModel.addAttribute("jd", jd.getMovie());			
+		
+		theModel.addAttribute("release_date", jd.getMovie().getRelease_date().substring(0, 4));	
+		
+		theModel.addAttribute("countries", jd.getMovie().getProduction_countries().toString());	
+		
+		theModel.addAttribute("companies", jd.getMovie().getProduction_companies().toString());	
 
 		String posterUrl = "https://image.tmdb.org/t/p/w500"+jd.getMovie().getPoster_path();
 		
@@ -64,7 +73,7 @@ public class SearchController {
         
 		jdVideo.Deser(2);			
 						
-		System.out.print(jdVideo.getFilmVideo().getResults().get(0).getKey());
+		System.out.print("TEST");
 		
 		String trailer_url = "https://www.youtube.com/embed/"+jdVideo.getFilmVideo().getResults().get(0).getKey();
 		
