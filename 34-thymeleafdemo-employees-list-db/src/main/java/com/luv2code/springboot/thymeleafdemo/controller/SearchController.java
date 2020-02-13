@@ -20,7 +20,7 @@ public class SearchController {
 		
 		theModel.addAttribute("film", theFilm);			
 		
-		return "/mss/search-form";
+		return "/mss/search-index";
 	}
 
 	
@@ -30,24 +30,21 @@ public class SearchController {
 			Model theModel) {				
 		
 		theModel.addAttribute("film", theFilm);	
+		Finder f = new Finder(theFilm.getFirstName());			//get string query from the form
+
+		JsonD jdFirst = new JsonD(f.outUrl());			//get json using string query		
+
+		jdFirst.Deser(0);				// invoke deserilalize method
 		
-		Finder f = new Finder(theFilm.getFirstName());
+		System.out.print("TEST");
 		
-		
-		JsonD jdFirst = new JsonD(f.outUrl());
-		
-		jdFirst.Deser(0);	
-		
-				System.out.print("TEST");
-		
-		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());	
-		
+		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());			
 		
 		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
 		
-		JsonD jd = new JsonD(fullUrl);
-		
-		jd.Deser(1);			
+		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
+
+		jd.Deser(1);						// invoke deserilalize method
 		
 		theModel.addAttribute("jd", jd.getMovie());			
 		
@@ -69,11 +66,9 @@ public class SearchController {
 		
 		String movie_video_url = "https://api.themoviedb.org/3/movie/"+movie_id+"/videos?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
 		
-        JsonD jdVideo = new JsonD(movie_video_url);		
+        JsonD jdVideo = new JsonD(movie_video_url);		//get json to get trailer video url
         
-		jdVideo.Deser(2);			
-						
-		System.out.print("TEST");
+		jdVideo.Deser(2);			//deser method						
 		
 		String trailer_url = "https://www.youtube.com/embed/"+jdVideo.getFilmVideo().getResults().get(0).getKey();
 		
