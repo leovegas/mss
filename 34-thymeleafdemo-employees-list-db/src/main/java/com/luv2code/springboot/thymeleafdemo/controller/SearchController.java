@@ -22,37 +22,56 @@ public class SearchController {
 		
 		return "/mss/search-index";
 	}
+	
+	@GetMapping("/list")
+	public String showList(@ModelAttribute("film") Film theFilm,
+			Model theModel) {				
+		
+		theModel.addAttribute("film", theFilm);		
+		
+				
+		
+		return "/mss/search-index";
+	}
 
 	
 	
 	@GetMapping("/action")
 	public String searchEmployee(@ModelAttribute("film") Film theFilm,
-			Model theModel) {				
-		
+			Model theModel) {		
+				
 		theModel.addAttribute("film", theFilm);	
 		Finder f = new Finder(theFilm.getFirstName());			//get string query from the form
+		System.out.print(theFilm.getFirstName());		
+
+		if (theFilm.getFirstName().isEmpty()) return "/mss/search-index";
+		
 
 		JsonD jdFirst = new JsonD(f.outUrl());			//get json using string query		
 
-		jdFirst.Deser(0);				// invoke deserilalize method
+		jdFirst.Deser(0);				// invoke deserilalize method		
 		
-		System.out.print("TEST");
+		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());	
 		
-		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());			
+		if (movie_id==null) {movie_id="No information";}
 		
-		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
+		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
 		
 		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
 
-		jd.Deser(1);						// invoke deserilalize method
+		jd.Deser(1);						// invoke deserilalize method		
+				
+		boolean has_video = jd.getMovie().isVideo();		
 		
 		theModel.addAttribute("jd", jd.getMovie());			
 		
 		theModel.addAttribute("release_date", jd.getMovie().getRelease_date().substring(0, 4));	
 		
 		theModel.addAttribute("countries", jd.getMovie().getProduction_countries().toString());	
+		if (jd.getMovie().getProduction_countries().toString()==null) {theModel.addAttribute("countries", "No information");}
 		
 		theModel.addAttribute("companies", jd.getMovie().getProduction_companies().toString());	
+		if (jd.getMovie().getProduction_countries().toString()==null) {theModel.addAttribute("companies", "No information");}
 
 		String posterUrl = "https://image.tmdb.org/t/p/w500"+jd.getMovie().getPoster_path();
 		
@@ -70,9 +89,11 @@ public class SearchController {
         
 		jdVideo.Deser(2);			//deser method						
 		
-		String trailer_url = "https://www.youtube.com/embed/"+jdVideo.getFilmVideo().getResults().get(0).getKey();
+		if (has_video) {
+//			String trailer_url = "https://www.youtube.com/embed/"+jdVideo.getFilmVideo().getResults().get(0).getKey();
+//			theModel.addAttribute("trailer_url", trailer_url);
+		}
 		
-		theModel.addAttribute("trailer_url", trailer_url);
 		
 		return "/mss/search-form";
 	}

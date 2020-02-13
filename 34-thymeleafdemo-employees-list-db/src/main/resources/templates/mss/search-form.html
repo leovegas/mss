@@ -29,17 +29,18 @@
 	<div class="container">
 
 		<hr>
+		
 		<div id="logo" class="text-center">
 			<h1>
 				<a href="/"> 
-				<img th:src="@{/image/film-logo200.png}"
-					class="figure-img img-fluid rounded" alt="...">
+				<img style="max-width: 400px;" th:src="@{/image/film-logo200.png}"
+					class="figure-img img-fluid rounded" alt="Movie Search Service">
 					</a>
 			</h1>
 		</div>
 		<hr>
 		<div class="d-flex justify-content-center">
-			<nav class="navbar navbar-light bg-light">
+			<nav class="navbar navbar-light bg-white">
 				<form class="form-inline" action="#"
 					th:action="@{/mss/action}" th:object="${film}" method="GET">
 
@@ -47,8 +48,6 @@
 						type="text" name="subject" th:field="*{firstName}"> <input
 						class="btn btn-outline-success my-2 my-sm-0" type="submit"
 						value="Search">
-
-
 				</form>
 			</nav>
 		</div>
@@ -154,18 +153,15 @@ $(document).ready(function() {
 				<div class="col">
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item" th:if="${jd != null}" th:object="${jd}" th:utext=${jd.original_title}></li>
-						<li class="list-group-item" th:utext=${release_date}></li>
-						<li class="list-group-item" th:utext=${countries}></li>
-						<li class="list-group-item" th:utext=${companies}></li>
+						<li class="list-group-item" th:if="${release_date != null}" th:utext=${release_date}></li>
+						<li class="list-group-item" th:if="${countries != null}" th:utext=${countries}></li>
+						<li class="list-group-item" th:if="${companies != null}" th:utext=${companies}></li>
 						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.budget+'$'}></li>
 						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.vote_average}></li>						
 						<li class="list-group-item" th:if="${jd != null}" th:utext=${jd.vote_count}></li>						
 						<li class="list-group-item"></li>
 						<li class="list-group-item"></li>
 				    	<li class="list-group-item"></li>
-						
-						
-						
 						
 						
 					</ul>
