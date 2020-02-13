@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
+<title>Movie Search Service</title>
+</head>
+
+<body>
+
+	<div class="container">
+
+		<hr>
+
+		<div id="logo" class="text-center">
+			<h1>
+				<a href="/"> <img style="max-width: 400px;"
+					th:src="@{/image/film-logo200.png}"
+					class="figure-img img-fluid rounded" alt="Movie Search Service">
+				</a>
+			</h1>
+		</div>
+		<hr>
+		<div class="d-flex justify-content-center">
+			<nav class="navbar navbar-light bg-white">
+				<form class="form-inline" action="#" th:action="@{/mss/list}"
+					th:object="${film}" method="GET">
+
+					<label for="subject"></label> <input class="form-control mr-sm-2"
+						type="text" name="subject" th:field="*{firstName}"> <input
+						class="btn btn-outline-success my-2 my-sm-0" type="submit"
+						value="Search">
+				</form>
+			</nav>
+		</div>
+
+
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th></th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+
+				</tr>
+			</tbody>
+		</table>
+
+<!-- main body start-->
+
+
+
+<div class="container">
+    <div style="float:left">
+
+
+	<tr th:each="poster, itemStat : *{posters}">
+			<ul class="list-group">
+				<li class="list-group-item">
+				<a href = "/">
+				
+				<img th:src="*{posters[__${itemStat.index}__]}" alt="..." style="max-width: 150px; margin: auto; left: 1%; right: 1%;">
+				
+				</a></li>
+			</ul>
+		</tr>
+
+</div>
+    <div style="width:300px;float:left">
+
+	<tr th:each="poster, itemStat : *{posters}">
+			<ul class="list-group">
+				<li class="list-group-item">
+				<img th:src="*{posters[__${itemStat.index}__]}" alt="..." style="max-width: 150px; margin: auto; left: 1%; right: 1%;">
+								
+				
+				</li>
+			</ul>
+		</tr>
+
+</div>
+    <br style="clear:both" />
+</div>
+
+
+
+	
+
+
+
+<!-- main body end-->
+
+
+
+
+		<table class="table table-bordered table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th></th>
+
+				</tr>
+			</thead>
+
+			<tbody>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<a th:href="@{/employees/list}">Back to Employees List</a>
+
+	</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
