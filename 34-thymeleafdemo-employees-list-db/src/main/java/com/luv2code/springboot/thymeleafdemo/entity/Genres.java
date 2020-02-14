@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Genres {
 
+	@Override
+	public String toString() {
+		return name;
+	}
 	@JsonProperty("id")
 	private int id;
 	@JsonProperty("name")

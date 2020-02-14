@@ -8,10 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.luv2code.springboot.thymeleafdemo.deserialize.JsonD;
+import com.luv2code.springboot.thymeleafdemo.entity.Employee;
 import com.luv2code.springboot.thymeleafdemo.entity.Film;
 import com.luv2code.springboot.thymeleafdemo.entity.FilmDescription;
+import com.luv2code.springboot.thymeleafdemo.entity.Genres;
+import com.luv2code.springboot.thymeleafdemo.entity.Movie;
 import com.luv2code.springboot.thymeleafdemo.http.GetResponse;
 import com.luv2code.springboot.thymeleafdemo.search.Finder;
 
@@ -30,33 +34,73 @@ public class SearchController {
 	
 	@GetMapping("/list")
 	public String showList(@ModelAttribute("film") Film theFilm,
-			Model theModel) {				
+			Model theModel) {	
+		
+		List<Movie> movies = new ArrayList<>();
+		List<List<Genres>> genres = new ArrayList<>();
+
 		
 		theModel.addAttribute("film", theFilm);	
 		
 		theModel.addAttribute("film", theFilm);	
 		Finder f = new Finder(theFilm.getFirstName());			//get string query from the form
-		System.out.print(theFilm.getFirstName());		
 
 		if (theFilm.getFirstName().isEmpty()) return "/mss/search-index";		
 
 		JsonD jdFirst = new JsonD(f.outUrl());			//get json using string query		
 
-		jdFirst.Deser(0);			
+		jdFirst.Deser(0);	
+		
+		for (int i=0;i<jdFirst.getFilmEntity().getResults().size();i++) {
+		
+		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(i).getId());			
+		
+		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
+		
+		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
+
+		jd.Deser(1);
+		
+		movies.add(jd.getMovie());
+		genres.add(jd.getMovie().getGenres());
+		
+		}	
 
 		List<FilmDescription> moviesList = jdFirst.getFilmEntity().getResults();
 		
-		
 		List<String> posters = new ArrayList<>();
+		List<String> overviews = new ArrayList<>();
 		
 		for (FilmDescription iter: moviesList) {
 			posters.add("https://image.tmdb.org/t/p/w500"+iter.getPoster_path());
 		}
 		
 		theModel.addAttribute("posters", posters);
+		theModel.addAttribute("moviesList", moviesList);
+		theModel.addAttribute("movies", movies);
+		theModel.addAttribute("genres", genres);
 
 		
 		return "/mss/search-list";
+	}
+	
+	@GetMapping("/goToPageWithId")
+	public String showFormForUpdate(@RequestParam("id") int movie_id,
+									Model theModel) {	
+		
+        String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
+		
+		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
+
+		jd.Deser(1);
+		
+		
+			
+		// set employee as a model attribute to pre-populate the form
+		theModel.addAttribute("film", jd.getMovie());
+		
+		// send over to our form
+		return "/mss/action";			
 	}
 
 	

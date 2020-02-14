@@ -14,7 +14,7 @@ public class FilmDescription {
 		return "FilmDescription [popularity=" + popularity + ", vote_count=" + vote_count + ", video=" + video
 				+ ", poster_path=" + poster_path + ", id=" + id + ", adult=" + adult + ", backdrop_path="
 				+ backdrop_path + ", original_language=" + original_language + ", original_title=" + original_title
-				+ ", genre_ids3=" + Arrays.toString(genre_ids3) + ", title=" + title + ", vote_average="
+				+ ", genre_ids3=" + Arrays.toString(genre_ids) + ", title=" + title + ", vote_average="
 				+ vote_average + ", overview=" + overview + ", release_date=" + release_date + "]";
 	}
 	@JsonProperty("popularity")
@@ -35,8 +35,8 @@ public class FilmDescription {
 	private String original_language;
 	@JsonProperty("original_title")
 	private String original_title;
-	@JsonProperty("genre_ids3")
-	private int[] genre_ids3;
+	@JsonProperty("genre_ids")
+	private int[] genre_ids;
 	@JsonProperty("title")
 	private String title;
 	@JsonProperty("vote_average")
@@ -99,11 +99,11 @@ public class FilmDescription {
 	public void setOriginal_title(String original_title) {
 		this.original_title = original_title;
 	}
-	public int[] getGenre_ids3() {
-		return genre_ids3;
+	public int[] getGenre_ids() {
+		return genre_ids;
 	}
-	public void setGenre_ids3(int[] genre_ids3) {
-		this.genre_ids3 = genre_ids3;
+	public void setGenre_ids(int[] genre_ids) {
+		this.genre_ids = genre_ids;
 	}
 	public String getTitle() {
 		return title;

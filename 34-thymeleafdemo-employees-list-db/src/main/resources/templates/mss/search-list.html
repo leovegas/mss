@@ -31,6 +31,48 @@
 <body>
 
 	<div class="container">
+	
+	<!-- Start navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+   <form class="form-inline" action="#" th:action="@{/mss/list}"
+					th:object="${film}" method="GET">
+
+					<label for="subject"></label> <input class="form-control mr-sm-2"
+						type="text" name="subject" th:field="*{firstName}"> <input
+						class="btn btn-outline-success my-2 my-sm-0" type="submit"
+						value="Search">
+				</form>
+  </div>
+</nav>
+	<!-- End navbar -->
 
 		<hr>
 
@@ -43,21 +85,7 @@
 			</h1>
 		</div>
 		<hr>
-		<div class="d-flex justify-content-center">
-			<nav class="navbar navbar-light bg-white">
-				<form class="form-inline" action="#" th:action="@{/mss/list}"
-					th:object="${film}" method="GET">
-
-					<label for="subject"></label> <input class="form-control mr-sm-2"
-						type="text" name="subject" th:field="*{firstName}"> <input
-						class="btn btn-outline-success my-2 my-sm-0" type="submit"
-						value="Search">
-				</form>
-			</nav>
-		</div>
-
-
-
+	
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">
 				<tr>
@@ -74,50 +102,44 @@
 
 <!-- main body start-->
 
-
-
-<div class="container">
-    <div style="float:left">
-
-
-	<tr th:each="poster, itemStat : *{posters}">
+		<tr th:each="poster, itemStat : *{posters}">
 			<ul class="list-group">
 				<li class="list-group-item">
-				<a href = "/">
-				
-				<img th:src="*{posters[__${itemStat.index}__]}" alt="..." style="max-width: 150px; margin: auto; left: 1%; right: 1%;">
-				
-				</a></li>
-			</ul>
-		</tr>
+					<div class="container">
+						<div class="row">
+							<div class="col" style="max-width:18%;">
+								<a href="/"> <img th:src="*{posters[__${itemStat.index}__]}"
+									alt="..."
+									style="max-width: 150px; margin: auto; left: 1%; right: 1%;">
+								</a>
+							</div>
+						
+							<div class="col">
+								<ul class="list-group">
+									<li class="list-group-item" style="border: none; font-size:120%;">
+									<span th:text="*{moviesList[__${itemStat.index}__].original_title}">
+								</span><br>
+								<span style="font-size:80%;" th:text="*{moviesList[__${itemStat.index}__].release_date}">
+								</span></li>
+								<br>
+									<li class="list-group-item" style="border: none; font-size:80%;">
+									<span style="font-size:100%;" th:text="*{genres[__${itemStat.index}__]}">
+								</span>
+								</li>
+									<li class="list-group-item" style="border: none">Third
+										item</li>
+								</ul>
 
-</div>
-    <div style="width:300px;float:left">
+							</div>
 
-	<tr th:each="poster, itemStat : *{posters}">
-			<ul class="list-group">
-				<li class="list-group-item">
-				<img th:src="*{posters[__${itemStat.index}__]}" alt="..." style="max-width: 150px; margin: auto; left: 1%; right: 1%;">
-								
-				
+
+						</div>
+					</div>
 				</li>
 			</ul>
 		</tr>
 
-</div>
-    <br style="clear:both" />
-</div>
-
-
-
-	
-
-
-
-<!-- main body end-->
-
-
-
+		<!-- main body end-->
 
 		<table class="table table-bordered table-striped">
 			<thead class="thead-dark">
@@ -133,7 +155,7 @@
 			</tbody>
 		</table>
 
-		<a th:href="@{/employees/list}">Back to Employees List</a>
+		<a th:href="@{/}">Contacts</a>
 
 	</div>
 </body>
