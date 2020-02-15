@@ -1,6 +1,7 @@
 package com.luv2code.springboot.thymeleafdemo.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.luv2code.springboot.thymeleafdemo.deserialize.JsonD;
+import com.luv2code.springboot.thymeleafdemo.entity.Countries;
 import com.luv2code.springboot.thymeleafdemo.entity.Employee;
 import com.luv2code.springboot.thymeleafdemo.entity.Film;
 import com.luv2code.springboot.thymeleafdemo.entity.FilmDescription;
@@ -23,6 +25,8 @@ import com.luv2code.springboot.thymeleafdemo.search.Finder;
 @RequestMapping("/mss")
 public class SearchController {
 	
+		
+
 	@GetMapping("/search")
 	public String searchPage(@ModelAttribute("film") Film theFilm,
 			Model theModel) {				
@@ -37,7 +41,9 @@ public class SearchController {
 			Model theModel) {	
 		
 		List<Movie> movies = new ArrayList<>();
-		List<List<Genres>> genres = new ArrayList<>();
+		List<String> genres = new ArrayList<>();
+		List<String> countries = new ArrayList<>();
+
 
 		
 		theModel.addAttribute("film", theFilm);	
@@ -62,7 +68,9 @@ public class SearchController {
 		jd.Deser(1);
 		
 		movies.add(jd.getMovie());
-		genres.add(jd.getMovie().getGenres());
+		genres.add(jd.getMovie().getGenres().toString().replaceAll("^\\[|\\]$", ""));
+		countries.add(jd.getMovie().getProduction_countries().toString().replaceAll("^\\[|\\]$", ""));
+
 		
 		}	
 
@@ -79,58 +87,23 @@ public class SearchController {
 		theModel.addAttribute("moviesList", moviesList);
 		theModel.addAttribute("movies", movies);
 		theModel.addAttribute("genres", genres);
+		theModel.addAttribute("countries",countries);
+
 
 		
 		return "/mss/search-list";
 	}
 	
 	@GetMapping("/goToPageWithId")
-	public String showFormForUpdate(@RequestParam("id") int movie_id,
+	public String showFormForUpdate(@RequestParam("id") int movie_id, @ModelAttribute("film") Film theFilm,
 									Model theModel) {	
 		
         String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
 		
 		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
 
-		jd.Deser(1);
-		
-		
+		jd.Deser(1);		
 			
-		// set employee as a model attribute to pre-populate the form
-		theModel.addAttribute("film", jd.getMovie());
-		
-		// send over to our form
-		return "/mss/action";			
-	}
-
-	
-	
-	@GetMapping("/action")
-	public String searchEmployee(@ModelAttribute("film") Film theFilm,
-			Model theModel) {		
-				
-		theModel.addAttribute("film", theFilm);	
-		Finder f = new Finder(theFilm.getFirstName());			//get string query from the form
-		System.out.print(theFilm.getFirstName());		
-
-		if (theFilm.getFirstName().isEmpty()) return "/mss/search-index";		
-
-		JsonD jdFirst = new JsonD(f.outUrl());			//get json using string query		
-
-		jdFirst.Deser(0);				// invoke deserilalize method		
-		
-		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());	
-		
-		if (movie_id==null) {movie_id="No information";}
-		
-		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
-		
-		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
-
-		jd.Deser(1);						// invoke deserilalize method		
-				
-		boolean has_video = jd.getMovie().isVideo();		
-		
 		theModel.addAttribute("jd", jd.getMovie());			
 		
 		theModel.addAttribute("release_date", jd.getMovie().getRelease_date().substring(0, 4));	
@@ -147,11 +120,77 @@ public class SearchController {
 		
 		theModel.addAttribute("posterurl", posterUrl);	
 		
-		theModel.addAttribute("overview", overview);
+		theModel.addAttribute("overview", jd.getMovie().getOverview());
 		
-		theModel.addAttribute("movie_id", movie_id);
+		theModel.addAttribute("movie_id", jd.getMovie().getId());
 		
-		String movie_video_url = "https://api.themoviedb.org/3/movie/"+movie_id+"/videos?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
+		String movie_video_url = "https://api.themoviedb.org/3/movie/"+jd.getMovie().getId()+"/videos?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
+		
+        JsonD jdVideo = new JsonD(movie_video_url);		//get json to get trailer video url        
+      
+		jdVideo.Deser(2);			//deser method						
+		
+		if (!jdVideo.getFilmVideo().getResults().isEmpty()) {			
+			
+			String trailer_url = "https://www.youtube.com/embed/"+jdVideo.getFilmVideo().getResults().get(0).getKey();
+			theModel.addAttribute("trailer_url", trailer_url);
+		}
+		
+		
+		return "/mss/search-form";		
+	}
+
+	
+	
+	@GetMapping("/action")
+	public String searchEmployee(@ModelAttribute("movie") Movie theMovie,
+			Model theModel) {		
+		
+		System.out.println(theMovie.getId());
+				
+//		theModel.addAttribute("film", theFilm);	
+//		Finder f = new Finder(theFilm.getFirstName());			//get string query from the form
+//		System.out.print(theFilm.getFirstName());		
+//
+//		if (theFilm.getFirstName().isEmpty()) return "/mss/search-index";		
+//
+//		JsonD jdFirst = new JsonD(f.outUrl());			//get json using string query		
+//
+//		jdFirst.Deser(0);				// invoke deserilalize method		
+//		
+//		String movie_id = String.valueOf(jdFirst.getFilmEntity().getResults().get(0).getId());	
+//		
+//		if (movie_id==null) {movie_id="No information";}
+//		
+//		String fullUrl =  "https://api.themoviedb.org/3/movie/"+movie_id+"?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";		
+//		
+//		JsonD jd = new JsonD(fullUrl);			//get json from using id query we get from jDfirst instance
+//
+//		jd.Deser(1);						// invoke deserilalize method		
+//				
+//		boolean has_video = jd.getMovie().isVideo();		
+		
+		theModel.addAttribute("jd", theMovie);			
+		
+		theModel.addAttribute("release_date", theMovie.getRelease_date().substring(0, 4));	
+		
+		theModel.addAttribute("countries", theMovie.getProduction_countries().toString());	
+		if (theMovie.getProduction_countries().toString()==null) {theModel.addAttribute("countries", "No information");}
+		
+		theModel.addAttribute("companies", theMovie.getProduction_companies().toString());	
+		if (theMovie.getProduction_countries().toString()==null) {theModel.addAttribute("companies", "No information");}
+
+		String posterUrl = "https://image.tmdb.org/t/p/w500"+theMovie.getPoster_path();
+		
+		String overview = theMovie.getOverview();		
+		
+		theModel.addAttribute("posterurl", theMovie.getPoster_path());	
+		
+		theModel.addAttribute("overview", theMovie.getOverview());
+		
+		theModel.addAttribute("movie_id", theMovie.getId());
+		
+		String movie_video_url = "https://api.themoviedb.org/3/movie/"+theMovie.getId()+"/videos?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US";
 		
         JsonD jdVideo = new JsonD(movie_video_url);		//get json to get trailer video url        
       

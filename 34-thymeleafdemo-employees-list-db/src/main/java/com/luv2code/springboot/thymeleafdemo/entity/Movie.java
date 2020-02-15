@@ -160,7 +160,7 @@ public class Movie {
 		this.production_countries = production_countries;
 	}
 	public String getRelease_date() {
-		return release_date;
+		return release_date.substring(0,4);
 	}
 	public void setRelease_date(String release_date) {
 		this.release_date = release_date;

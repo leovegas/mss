@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luv2code.springboot.thymeleafdemo.entity.FilmEntity;
 import com.luv2code.springboot.thymeleafdemo.entity.FilmVideo;
 import com.luv2code.springboot.thymeleafdemo.entity.Movie;
+import com.luv2code.springboot.thymeleafdemo.entity.PopularMovie;
 
 public class JsonD {	
 
@@ -34,6 +35,17 @@ public class JsonD {
 	Movie movie;
 	FilmVideo filmVideo;
 	FilmEntity filmEntity;
+	PopularMovie popularMovie;
+	
+	
+
+	public PopularMovie getPopularMovie() {
+		return popularMovie;
+	}
+
+	public void setPopularMovie(PopularMovie popularMovie) {
+		this.popularMovie = popularMovie;
+	}
 
 	public FilmEntity getFilmEntity() {
 		return filmEntity;
@@ -70,7 +82,10 @@ public class JsonD {
 		movie = objectMapper.readValue(www, Movie.class);
     	if (flag==2)
     	filmVideo = objectMapper.readValue(www, FilmVideo.class);
-    	
+    	if (flag==3) {
+    		www = new URL("https://api.themoviedb.org/3/movie/popular?api_key=36ee14f924ebe5d44900f1d0244cc704&language=en-US&page=1");
+    	    popularMovie = objectMapper.readValue(www, PopularMovie.class);
+    	}
 		
 	} catch (IOException e) {
 		e.printStackTrace();

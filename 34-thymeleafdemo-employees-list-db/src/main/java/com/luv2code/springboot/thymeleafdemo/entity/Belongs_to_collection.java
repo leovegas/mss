@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Belongs_to_collection {
 	
+	
 	@JsonProperty("id")
 	private int id;
 	@JsonProperty("name")
